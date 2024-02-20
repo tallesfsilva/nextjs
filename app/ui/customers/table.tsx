@@ -2,18 +2,25 @@ import Image from 'next/image';
 import { lusitana } from '@/app/ui/fonts';
 import Search from '@/app/ui/search';
 import { CustomersTable, FormattedCustomersTable } from '@/app/lib/definitions';
-
+import {fetchFilteredCustomers} from '@/app/lib/data'
+import { CreateCustomer } from '@/app/ui/customers/buttons';
 export default async function CustomersTable({
-  customers,
+  query,
+  currentPage,
 }: {
-  customers: FormattedCustomersTable[];
+  query: string;
+  currentPage: number;
 }) {
+  const customers = await fetchFilteredCustomers(query, currentPage);
   return (
     <div className="w-full">
       <h1 className={`${lusitana.className} mb-8 text-xl md:text-2xl`}>
         Customers
       </h1>
+      <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
       <Search placeholder="Search customers..." />
+      <CreateCustomer></CreateCustomer>
+      </div>
       <div className="mt-6 flow-root">
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full align-middle">
